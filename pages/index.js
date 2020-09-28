@@ -28,26 +28,23 @@ const ALink = styled.a`
   }
 `
 
-const Home = () => {
+const HomePage = () => {
 
   return (
     <div className="container">
       <Head>
-        <title>Comeon Assignmentr</title>
+        <title>Home</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-          <img src="/vercel.svg" alt="Vercel Logo" className="logo" />
+      <img src="/vercel.svg" alt="Vercel Logo" className="logo" />
       <Main>
         <Title>
           Welcome to <ALink href="https://nextjs.org">Next.js!</ALink>
         </Title>
       </Main>
-
-      <style jsx global>{`
-      `}</style>
     </div>
   )
 }
 
-export default Home
+export default HomePage
