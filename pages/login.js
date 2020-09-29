@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Head from 'next/head'
 import styled from 'styled-components';
+import Cookies from 'js-cookie';
 import { Container, TextField, Button } from '../components';
 
 const LoginForm = styled.div`
@@ -24,6 +25,7 @@ const LoginPage = () => {
   }
 
   const tryLogin = async () => {
+    const credendtial = JSON.stringify({ username, password})
     try {
       const response = await fetch(
         'http://localhost:3001/login',
@@ -33,17 +35,15 @@ const LoginPage = () => {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({
-            username: username,
-            password: password
-          })
+          body: credendtial
         }
       );
       const profile = await response.json()
       if (profile.error) {
-        console.log(null)
+        Cookies.remove('token');
       } else {
-        console.log(profile)
+        Cookies.set('token', credendtial);
+        window.location.href = '/list'
       }
     } catch (err) {
       console.error(err)
@@ -71,7 +71,7 @@ const LoginPage = () => {
             style={{ marginBottom: '10px' }}
           />
           <Button onClick={tryLogin}>
-              Login <i className="fas fa-chevron-right"></i>
+              Login <i aria-hidden className="fas fa-chevron-right"></i>
           </Button>
         </LoginForm>
       </Container>

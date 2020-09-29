@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import Cookies from 'js-cookie';
 const AuthContext = createContext()
 
 function AuthProvider({ children }) {
@@ -7,29 +8,10 @@ function AuthProvider({ children }) {
   const [user, setUser] = useState()
 
   async function getUser() {
-    try {
-      const response = await fetch(
-        'http://localhost:3001/login',
-        {
-          method: 'post',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            username: 'rebecka',
-            password: 'secret'
-          })
-        }
-      );
-      const profile = await response.json()
-      if (profile.error) {
-        setUser(null)
-      } else {
-        setUser(profile)
-      }
-    } catch (err) {
-      console.error(err)
+    if (Cookies.get('token')) {
+      setUser(Cookies.get('token').username)
+    } else {
+      setUser(null)
     }
   }
 
@@ -38,16 +20,18 @@ function AuthProvider({ children }) {
   }, [pathname])
 
   useEffect(() => {
-    // Check that a new route is OK
     const handleRouteChange = url => {
-      if (url !== '/' && !user) {
-        window.location.href = '/'
+      if (url !== '/login' && !user) {
+        window.location.href = '/login'
       }
     }
 
-    // Check that initial route is OK
-    if (pathname !== '/' && user === null) {
-      window.location.href = '/'
+    if (pathname === '/') {
+      window.location.href = '/login'
+    }
+
+    if (pathname !== '/login' && user === null) {
+      window.location.href = '/login'
     }
 
     // Monitor routes
@@ -58,7 +42,9 @@ function AuthProvider({ children }) {
   }, [user])
 
   return (
-    <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user }}>
+      {children}
+    </AuthContext.Provider>
   )
 }
 
