@@ -25,7 +25,6 @@ const LoginPage = () => {
   }
 
   const tryLogin = async () => {
-    const credendtial = JSON.stringify({ username, password})
     try {
       const response = await fetch(
         'http://localhost:3001/login',
@@ -35,14 +34,17 @@ const LoginPage = () => {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
           },
-          body: credendtial
+          body: JSON.stringify({ username, password})
         }
       );
       const profile = await response.json()
       if (profile.error) {
         Cookies.remove('token');
       } else {
-        Cookies.set('token', credendtial);
+        Cookies.set('token', JSON.stringify({
+          username,
+          ...profile.player
+        }));
         window.location.href = '/list'
       }
     } catch (err) {

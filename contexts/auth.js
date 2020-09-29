@@ -9,7 +9,7 @@ function AuthProvider({ children }) {
 
   async function getUser() {
     if (Cookies.get('token')) {
-      setUser(Cookies.get('token').username)
+      setUser(JSON.parse(Cookies.get('token')))
     } else {
       setUser(null)
     }
@@ -42,7 +42,7 @@ function AuthProvider({ children }) {
   }, [user])
 
   return (
-    <AuthContext.Provider value={{ user }}>
+    <AuthContext.Provider value={user}>
       {children}
     </AuthContext.Provider>
   )
