@@ -24,6 +24,7 @@ export default class MyDocument extends Document {
       <Html>
         <Head>
           {this.props.styleTags}
+          <script src="https://kit.fontawesome.com/9c2710712c.js" crossorigin="anonymous"></script>
         </Head>
         <body>
           <Main />

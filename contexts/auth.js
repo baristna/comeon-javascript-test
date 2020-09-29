@@ -17,13 +17,12 @@ function AuthProvider({ children }) {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            username: 'rebeckas',
+            username: 'rebecka',
             password: 'secret'
           })
         }
       );
       const profile = await response.json()
-      console.log(response)
       if (profile.error) {
         setUser(null)
       } else {

@@ -1,13 +1,12 @@
 import App from 'next/app';
 import React from 'react';
-import Link from 'next/link'
-import { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import { AuthProvider } from '../contexts/auth'
 
 const GlobalStyle =  createGlobalStyle`
   html,
   body {
-    background: #CCC;
+    background: #444;
     padding: 0;
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
@@ -20,38 +19,27 @@ const GlobalStyle =  createGlobalStyle`
   }
 `;
 
+const LogoWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`
+
+const Logo = styled.img`
+  width: 50%;
+`
+
 export default class Comeon extends App {
 	render() {
+    const isServer = () => typeof window === `undefined`;
 		const { Component, pageProps } = this.props;
 		return (
-			<>
-        <AuthProvider>
-        <ul>
-          <li>
-            <Link href="/">
-              <a>Home</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/login">
-              <a>Login</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/list">
-              <a>List</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/game">
-              <a>Game</a>
-            </Link>
-          </li>
-        </ul>
-          <Component {...pageProps} />;
-          <GlobalStyle />
-        </AuthProvider>
-			</>
+      <AuthProvider>
+        <LogoWrapper>
+          <Logo src="/logo.svg" alt="Comeon Logo" />
+        </LogoWrapper>
+        <Component {...pageProps} />
+        <GlobalStyle />
+      </AuthProvider>
 		);
 	}
 }
