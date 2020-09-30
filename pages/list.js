@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Head from 'next/head'
+import Link from 'next/link'
 import { useAuth } from '../contexts/auth';
 import { Container } from '../components';
 
@@ -44,7 +45,7 @@ const ListPage = () => {
             <tr>
               <td><img src={game.icon} alt={game.name}/></td>
               <td><h2>{game.name}</h2><p>{game.description}</p></td>
-              <td>{game.code}</td>
+              <td><Link href={`/game?code=${game.code}`}>PLAY</Link></td>
             </tr>
           ))}
         </table>
