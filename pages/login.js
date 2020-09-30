@@ -62,7 +62,7 @@ const LoginPage = ({ dispatch, session }) => {
             style={{ marginBottom: '10px' }}
           />
           <Button onClick={() => { dispatch(login({ username, password })) }}>
-              Login <i aria-hidden className="fas fa-chevron-right"></i>
+              Login <i aria-hidden className="fas fa-chevron-right" style={{ marginLeft: '10px'}} />
           </Button>
         </LoginForm>
       </Container>

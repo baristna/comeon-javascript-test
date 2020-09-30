@@ -1,8 +1,22 @@
+import { useEffect } from 'react';
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react';
-import { Container } from '../components';
+import Link from 'next/link'
+import styled from 'styled-components';
+import { Container, Panel, Button } from '../components';
 import { useAuth } from '../contexts/auth';
+
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`
+
+const Bar = styled.div`
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+`
 
 const GamePage = () => {
   const router = useRouter();
@@ -20,7 +34,20 @@ const GamePage = () => {
         <title>Game</title>
       </Head>
       <Container>
-        <div id='game-launch'></div>
+        <Panel {...auth} />
+        <Wrapper>
+          <Bar>
+            <Button
+              href='/games'
+              iconStart='fas fa-chevron-left'
+              secondary
+              style={{ marginBottom: '10px' }}
+            >
+              Back
+            </Button>
+            <div id='game-launch'></div>
+          </Bar>
+        </Wrapper>
       </Container>
     </div>
   ) : null

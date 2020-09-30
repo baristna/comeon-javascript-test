@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Head from 'next/head'
 import Link from 'next/link'
 import { useAuth } from '../contexts/auth';
-import { Container } from '../components';
+import { Container, Panel, Button, GameCard } from '../components';
 import { fetchGames } from '../actions';
 
 const GamesWrapper = styled.div`
@@ -57,26 +57,14 @@ const ListPage = ({ dispatch, games }) => {
         <title>Games</title>
       </Head>
       <Container style={{ marginBottom: '30px' }}>
-        <img src={auth.avatar} />
-        {auth.name} {auth.event}
-        <Link href='/logout'>Logout</Link>
+        <Panel {...auth} />
         <GamesWrapper>
           <GamesList>
             <Title>Games</Title>
-            <table>
-              <tbody>
-                {games && games.map(game => {
-                  const filter = game.categoryIds.includes(parseInt(cat));
-                  return filter && (
-                    <tr key={game.name}>
-                      <td><img src={game.icon} alt={game.name}/></td>
-                      <td><h2>{game.name}</h2><p>{game.description}</p></td>
-                      <td><Link href={`/game?code=${game.code}`}>PLAY</Link></td>
-                    </tr>
-                  )
-                })} 
-              </tbody>
-            </table>
+            {games && games.map(game => {
+              const filter = game.categoryIds.includes(parseInt(cat));
+              return filter && <GameCard {...game} />;
+            })}
           </GamesList>
           <GamesSide>
             <Title>Categories</Title>

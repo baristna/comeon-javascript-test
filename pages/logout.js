@@ -8,7 +8,7 @@ const Logout = ({ dispatch, session }) => {
   const router = useRouter();
 
   useEffect(() => {
-    dispatch(logout(session.player.username));
+    dispatch(logout(session.player && session.player.username));
     router.push('/login');
   }, [])
   
