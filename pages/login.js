@@ -1,9 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import styled from 'styled-components';
-import Cookies from 'js-cookie';
 import { Container, TextField, Button } from '../components';
-import request from '../request';
+// Actions
+import {
+  login,
+  loginCheck,
+} from '../actions';
 
 const LoginForm = styled.div`
   display: flex;
@@ -12,7 +17,8 @@ const LoginForm = styled.div`
   justify-content: center;
 `
 
-const LoginPage = () => {
+const LoginPage = ({ dispatch, session }) => {
+  const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -25,25 +31,15 @@ const LoginPage = () => {
     handlers[field](e.currentTarget.value);
   }
 
-  const login = () => {
-    request({
-      method: 'post',
-      url: '/login',
-      data: { username, password }
-    })
-    .then((response) => {
-      const { player } = response.data
-      Cookies.set('token', JSON.stringify({
-        username,
-        ...player
-      }));
+  useEffect(() => {
+    dispatch(loginCheck())
+  }, [])
 
-      window.location.href = '/list'
-    })
-    .catch(err => {
-      console.log(err)
-    });
-  }
+  useEffect(() => {
+    if (session.player) {
+      router.push('/list')
+    }
+  }, [session])
 
   return (
     <div>
@@ -65,7 +61,7 @@ const LoginPage = () => {
             placeholder='Password'
             style={{ marginBottom: '10px' }}
           />
-          <Button onClick={login}>
+          <Button onClick={() => { dispatch(login({ username, password })) }}>
               Login <i aria-hidden className="fas fa-chevron-right"></i>
           </Button>
         </LoginForm>
@@ -74,4 +70,9 @@ const LoginPage = () => {
   )
 }
 
-export default LoginPage
+const mapStateToProps = (state) => {
+  let { session } = state;
+  return { session }
+}
+
+export default connect(mapStateToProps)(LoginPage);

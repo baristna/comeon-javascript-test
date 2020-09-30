@@ -1,10 +1,12 @@
-import { combineReducers, createStore } from "redux";
+import { combineReducers, createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from 'redux-devtools-extension';
-import counterReducer from './counterReducer';
+import thunkMiddleware from 'redux-thunk';
+import session from './sessionReducer';
 
 export default createStore(
   combineReducers({
-    counter: counterReducer,
-  }), 
-  composeWithDevTools()
+    session,
+  }),
+  {},
+  composeWithDevTools(applyMiddleware(thunkMiddleware)),
 );

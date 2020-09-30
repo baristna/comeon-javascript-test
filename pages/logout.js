@@ -1,22 +1,23 @@
 import { useEffect } from "react"
+import { useRouter } from 'next/router'
 import Cookies from 'js-cookie';
 import request from '../request';
 
-const Logout = () => {
+const Logout = (username) => {
+  const router = useRouter();
+
   useEffect(() => {
     request({
       method: 'post',
-      url: '/logout'
-    })
-    .then(() => {
-      Cookies.remove('token');
-      window.location.href = '/login';
+      url: '/logout',
+      data: { username }
     })
     .catch(err => {
       console.log(err)
-      Cookies.remove('token');
-      window.location.href = '/login';
     });
+
+    Cookies.remove('token');
+    router.push('/login');
   }, [])
   
   return null

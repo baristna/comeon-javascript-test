@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 const AuthContext = createContext()
 
 function AuthProvider({ children }) {
-  const { pathname, events } = useRouter()
+  const { pathname, events, push } = useRouter()
   const [user, setUser] = useState()
 
   async function getUser() {
@@ -22,16 +22,12 @@ function AuthProvider({ children }) {
   useEffect(() => {
     const handleRouteChange = url => {
       if (url !== '/login' && !user) {
-        window.location.href = '/login'
+        push('/login')
       }
     }
 
-    if (pathname === '/') {
-      window.location.href = '/login'
-    }
-
-    if (pathname !== '/login' && user === null) {
-      window.location.href = '/login'
+    if (pathname === '/' || (pathname !== '/login' && user === null)) {
+      push('/login')
     }
 
     // Monitor routes
