@@ -1,10 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import styled from 'styled-components';
 import { Container, Panel, Button } from '../components';
 import { useAuth } from '../contexts/auth';
+import { fetchGames } from '../actions';
 
 const Wrapper = styled.div`
   display: flex;
@@ -12,15 +14,32 @@ const Wrapper = styled.div`
 `
 
 const Bar = styled.div`
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-end;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  margin-top: 20px;
 `
 
-const GamePage = () => {
+const Title = styled.div`
+  flex-grow: 1;
+  font-weight: 600;
+  font-size: 24px;
+`
+
+const GamePage = ({ dispatch, games }) => {
   const router = useRouter();
   const auth = useAuth();
+  const [gameObj, setGameObj] = useState('');
+  
+  useEffect(() => {
+    dispatch(fetchGames())
+  }, [])
+
+  useEffect(() => {
+    if (games && router.query.code) {
+      setGameObj(games.find(i => i.name.toLowerCase() === router.query.code.toLowerCase()))
+    }
+  }, [games, router.query.code])
 
   useEffect(() => {
     if (auth && router.query.code) {
@@ -36,21 +55,28 @@ const GamePage = () => {
       <Container>
         <Panel {...auth} />
         <Wrapper>
-          <Bar>
-            <Button
-              href='/games'
-              iconStart='fas fa-chevron-left'
-              secondary
-              style={{ marginBottom: '10px' }}
-            >
-              Back
-            </Button>
+          <span>
+            <Bar>
+              <Title>{gameObj.name}</Title>
+              <Button
+                href='/games'
+                iconStart='fas fa-chevron-left'
+                secondary
+              >
+                Back
+              </Button>
+            </Bar>
             <div id='game-launch'></div>
-          </Bar>
+          </span>
         </Wrapper>
       </Container>
     </div>
   ) : null
 }
 
-export default GamePage
+const mapStateToProps = (state) => {
+  let { games } = state;
+  return { games: games.list }
+}
+
+export default connect(mapStateToProps)(GamePage);

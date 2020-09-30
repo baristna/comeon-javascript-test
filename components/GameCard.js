@@ -38,7 +38,7 @@ export const GameCard = ({
       <Description>{description}</Description>
       <Actions>
         <Button
-          iconStart='fas fa-chevron-right'
+          iconEnd='fas fa-chevron-right'
           href={`/game?code=${code}`}
           secondary
         >
