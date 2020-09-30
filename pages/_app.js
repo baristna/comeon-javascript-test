@@ -1,9 +1,10 @@
 import App from 'next/app';
 import React from 'react';
+import { createGlobalStyle } from 'styled-components';
 import { Provider } from 'react-redux';
 import store from '../store';
-import styled, { createGlobalStyle } from 'styled-components';
 import { AuthProvider } from '../contexts/auth'
+import { Header } from '../components';
 
 const GlobalStyle =  createGlobalStyle`
   html,
@@ -21,15 +22,6 @@ const GlobalStyle =  createGlobalStyle`
   }
 `;
 
-const LogoWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-`
-
-const Logo = styled.img`
-  width: 50%;
-`
-
 class Comeon extends App {
 	render() {
     const { Component, pageProps } = this.props;
@@ -37,9 +29,7 @@ class Comeon extends App {
 		return (
       <Provider store={store}>
         <AuthProvider>
-          <LogoWrapper>
-            <Logo src="/logo.svg" alt="Comeon Logo" />
-          </LogoWrapper>
+          <Header />
           <Component {...pageProps} />
           <GlobalStyle />
         </AuthProvider>
