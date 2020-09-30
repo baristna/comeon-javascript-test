@@ -1,25 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { connect } from 'react-redux';
 import Head from 'next/head'
 import Link from 'next/link'
 import { useAuth } from '../contexts/auth';
 import { Container } from '../components';
-import request from '../request'
+import { fetchGames } from '../actions';
 
-const ListPage = () => {
+const ListPage = ({ dispatch, games }) => {
   const auth = useAuth();
-  const [games, setGames] = useState([])
 
   useEffect(() => {
-    request({
-      method: 'get',
-      url: '/games'
-    })
-    .then(({data}) => {
-      setGames(data)
-    })
-    .catch(err => {
-      console.log(err)
-    });
+    dispatch(fetchGames())
   }, [])
 
   return auth ? (
@@ -35,7 +26,7 @@ const ListPage = () => {
         <hr />
         <table>
           <tbody>
-            {games.map(game => (
+            {games && games.map(game => (
               <tr key={game.name}>
                 <td><img src={game.icon} alt={game.name}/></td>
                 <td><h2>{game.name}</h2><p>{game.description}</p></td>
@@ -49,4 +40,9 @@ const ListPage = () => {
   ) : null
 }
 
-export default ListPage
+const mapStateToProps = (state) => {
+  let { games } = state;
+  return { games: games.list }
+}
+
+export default connect(mapStateToProps)(ListPage);

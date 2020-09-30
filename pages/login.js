@@ -37,7 +37,7 @@ const LoginPage = ({ dispatch, session }) => {
 
   useEffect(() => {
     if (session.player) {
-      router.push('/list')
+      router.push('/games')
     }
   }, [session])
 
