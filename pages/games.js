@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import Head from 'next/head'
-import Link from 'next/link'
 import { useAuth } from '../contexts/auth';
-import { Container, Panel, Button, GameCard } from '../components';
+import { Container, Panel, TextField, GameCard } from '../components';
 import { fetchGames } from '../actions';
 
 const GamesWrapper = styled.div`
@@ -46,7 +45,15 @@ const categoryNames = {
 const ListPage = ({ dispatch, games }) => {
   const auth = useAuth();
   const [cat, setCat] = useState(0);
+  const [search, setSearch] = useState('');
 
+  const gamesFilter = () => (
+    games.filter(game => (
+      game.categoryIds.includes(parseInt(cat)) &&
+      (search === '' || game.name.toLowerCase().includes(search.toLowerCase()))
+    ))
+  )
+  
   useEffect(() => {
     dispatch(fetchGames())
   }, [])
@@ -61,13 +68,19 @@ const ListPage = ({ dispatch, games }) => {
         <GamesWrapper>
           <GamesList>
             <Title>Games</Title>
-            {games && games.map(game => {
-              const filter = game.categoryIds.includes(parseInt(cat));
-              return filter && <GameCard {...game} />;
-            })}
+            {gamesFilter().map(game => <GameCard {...game} />)}
           </GamesList>
           <GamesSide>
-            <Title>Categories</Title>
+            <Title>Search</Title>
+            <TextField
+              value={search}
+              onChange={e => setSearch(e.currentTarget.value)}
+              placeholder='Search'
+              icon='fas fa-search'
+              style={{ width: '100%' }}
+            />
+
+            <Title style={{ marginTop: '20px'}}>Categories</Title>
             {Object.entries(categoryNames).map(([key, value]) => (
               <Category onClick={() => setCat(key)}>{value}</Category>
             ))}

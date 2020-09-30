@@ -53,6 +53,7 @@ const LoginPage = ({ dispatch, session }) => {
             onChange={(e) => handleOnChange(e, 'username')}
             style={{ marginBottom: '10px' }}
             placeholder='Username'
+            icon='fas fa-user'
           />
           <TextField
             type='password'
@@ -60,9 +61,13 @@ const LoginPage = ({ dispatch, session }) => {
             onChange={(e) => handleOnChange(e, 'password')}
             placeholder='Password'
             style={{ marginBottom: '10px' }}
+            icon='fas fa-key'
           />
-          <Button onClick={() => { dispatch(login({ username, password })) }}>
-              Login <i aria-hidden className="fas fa-chevron-right" style={{ marginLeft: '10px'}} />
+          <Button
+            iconStart='fas fa-chevron-right'
+            onClick={() => { dispatch(login({ username, password })) }}
+          >
+            Login
           </Button>
         </LoginForm>
       </Container>
