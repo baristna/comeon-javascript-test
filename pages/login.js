@@ -3,6 +3,7 @@ import Head from 'next/head'
 import styled from 'styled-components';
 import Cookies from 'js-cookie';
 import { Container, TextField, Button } from '../components';
+import request from '../request';
 
 const LoginForm = styled.div`
   display: flex;
@@ -24,32 +25,24 @@ const LoginPage = () => {
     handlers[field](e.currentTarget.value);
   }
 
-  const tryLogin = async () => {
-    try {
-      const response = await fetch(
-        'http://localhost:3001/login',
-        {
-          method: 'post',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ username, password})
-        }
-      );
-      const profile = await response.json()
-      if (profile.error) {
-        Cookies.remove('token');
-      } else {
-        Cookies.set('token', JSON.stringify({
-          username,
-          ...profile.player
-        }));
-        window.location.href = '/list'
-      }
-    } catch (err) {
-      console.error(err)
-    }
+  const login = () => {
+    request({
+      method: 'post',
+      url: '/login',
+      data: { username, password }
+    })
+    .then((response) => {
+      const { player } = response.data
+      Cookies.set('token', JSON.stringify({
+        username,
+        ...player
+      }));
+
+      window.location.href = '/list'
+    })
+    .catch(err => {
+      console.log(err)
+    });
   }
 
   return (
@@ -72,7 +65,7 @@ const LoginPage = () => {
             placeholder='Password'
             style={{ marginBottom: '10px' }}
           />
-          <Button onClick={tryLogin}>
+          <Button onClick={login}>
               Login <i aria-hidden className="fas fa-chevron-right"></i>
           </Button>
         </LoginForm>
