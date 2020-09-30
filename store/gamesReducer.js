@@ -2,6 +2,7 @@ import { actionTypes } from '../actions/action-types';
 
 const initialState = {
   list: [],
+  categories: [],
   loading: false,
   error: null
 }
