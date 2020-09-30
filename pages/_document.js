@@ -27,9 +27,9 @@ export default class MyDocument extends Document {
         </Head>
         <body>
           <Main />
-          <NextScript />
           <script src="https://kit.fontawesome.com/9c2710712c.js" crossorigin="anonymous"></script>
-          <script src="lib/comeon.game-1.0.min.js"></script>
+          <script async='false' defer='false' id='comeongame' src="lib/comeon.game-1.0.min.js"></script>
+          <NextScript />
         </body>
       </Html>
     );
