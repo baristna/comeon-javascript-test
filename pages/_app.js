@@ -30,7 +30,6 @@ const Logo = styled.img`
 
 export default class Comeon extends App {
 	render() {
-    const isServer = () => typeof window === `undefined`;
 		const { Component, pageProps } = this.props;
 		return (
       <AuthProvider>

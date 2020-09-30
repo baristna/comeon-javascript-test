@@ -10,14 +10,9 @@ const ListPage = () => {
 
   const getGames = async () => {
     try {
-      const response = await fetch(
-        'http://localhost:3001/games'
-      );
+      const response = await fetch('http://localhost:3001/games');
       const games = await response.json()
-      if (games.error) {
-        console.log(games.error)
-      } else {
-        console.log(games)
+      if (!games.error) {
         setGames(games)
       }
     } catch (err) {

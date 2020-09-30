@@ -3,7 +3,6 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react';
 import { Container } from '../components';
 
-
 const GamePage = () => {
   const router = useRouter()
 
