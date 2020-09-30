@@ -1,26 +1,23 @@
 import { useEffect } from "react"
+import { connect } from 'react-redux';
+import Head from 'next/head'
 import { useRouter } from 'next/router'
-import Cookies from 'js-cookie';
-import request from '../request';
+import { logout } from '../actions';
 
-const Logout = (username) => {
+const Logout = ({ dispatch, session }) => {
   const router = useRouter();
 
   useEffect(() => {
-    request({
-      method: 'post',
-      url: '/logout',
-      data: { username }
-    })
-    .catch(err => {
-      console.log(err)
-    });
-
-    Cookies.remove('token');
+    dispatch(logout(session.player.username));
     router.push('/login');
   }, [])
   
-  return null
+  return <Head><title>Logout</title></Head>
 }
 
-export default Logout
+const mapStateToProps = (state) => {
+  let { session } = state;
+  return { session }
+}
+
+export default connect(mapStateToProps)(Logout)

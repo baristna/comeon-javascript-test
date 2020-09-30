@@ -21,6 +21,7 @@ const ListPage = ({ dispatch, games }) => {
       <Container>
         <img src={auth.avatar} />
         {auth.name} {auth.event}
+        <Link href='/logout'>Logout</Link>
         <hr />
         <h3>Games</h3>
         <hr />

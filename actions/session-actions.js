@@ -53,3 +53,48 @@ export const loginError = (err) => dispatch => {
     payload: {err}
   })
 }
+
+
+export const logout = (username) => {
+  /**
+   * just because logout api is mock,
+   * cookie should be removed at start in case of endless redirect bug
+   * since state updated by cookie at page initializition.
+   */
+  Cookies.remove('token');
+  
+  return dispatch => {
+    dispatch(logoutStart());
+    return request(
+      {
+        method: 'post',
+        url: '/logout',
+        data: { username }
+      })
+      .then(() => {
+        dispatch(
+          logoutSuccess()
+        );
+      })
+      .catch(err => dispatch(logoutError(err)));
+  };
+}
+
+export const logoutStart = () => dispatch => {
+  return dispatch({
+    type: actionTypes.LOGOUT_START
+  })
+}
+
+export const logoutSuccess = () => dispatch => {
+  return dispatch({
+    type: actionTypes.LOGOUT_SUCCESS,
+  })
+}
+
+export const logoutError = (err) => dispatch => {
+  return dispatch({
+    type: actionTypes.LOGOUT_ERROR,
+    payload: {err}
+  })
+}
