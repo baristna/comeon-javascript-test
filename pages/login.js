@@ -45,6 +45,13 @@ const LoginPage = ({ dispatch, session }) => {
     handlers[field](e.currentTarget.value);
   }
 
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      e.preventDefault();
+      formSubmit();
+    }
+  }
+
   const formSubmit = () => {
     const errs = []
     if (username && password) {
@@ -95,6 +102,7 @@ const LoginPage = ({ dispatch, session }) => {
               placeholder='Username'
               icon='fas fa-user'
               error={errorUser}
+              onKeyDown={handleKeyDown}
             />
             <TextField
               big
@@ -105,11 +113,12 @@ const LoginPage = ({ dispatch, session }) => {
               style={{ marginBottom: '10px' }}
               icon='fas fa-key'
               error={errorPassword}
+              onKeyDown={handleKeyDown}
             />
             {!!errors.length && (
               <Errors>
                 {errors.map((err) => (
-                  <li>{err}</li>
+                  <li key={err}>{err}</li>
                 ))}
               </Errors>
             )}
