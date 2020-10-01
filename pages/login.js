@@ -10,11 +10,15 @@ import {
   loginCheck,
 } from '../actions';
 
-const LoginForm = styled.div`
+const Wrapper = styled.div`
   display: flex;
+  justify-content: center;
+`
+
+const LoginForm = styled.div`
+  display: inline-flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 `
 
 const LoginPage = ({ dispatch, session }) => {
@@ -47,29 +51,36 @@ const LoginPage = ({ dispatch, session }) => {
         <title>Login</title>
       </Head>
       <Container>
-        <LoginForm>
-          <TextField
-            value={username}
-            onChange={(e) => handleOnChange(e, 'username')}
-            style={{ marginBottom: '10px' }}
-            placeholder='Username'
-            icon='fas fa-user'
-          />
-          <TextField
-            type='password'
-            value={password}
-            onChange={(e) => handleOnChange(e, 'password')}
-            placeholder='Password'
-            style={{ marginBottom: '10px' }}
-            icon='fas fa-key'
-          />
-          <Button
-            iconStart='fas fa-chevron-right'
-            onClick={() => { dispatch(login({ username, password })) }}
-          >
-            Login
-          </Button>
-        </LoginForm>
+        <Wrapper>
+          <LoginForm>
+            <h1>LOGIN</h1>
+            <TextField
+              big
+              value={username}
+              onChange={(e) => handleOnChange(e, 'username')}
+              style={{ marginBottom: '10px' }}
+              placeholder='Username'
+              icon='fas fa-user'
+            />
+            <TextField
+              big
+              type='password'
+              value={password}
+              onChange={(e) => handleOnChange(e, 'password')}
+              placeholder='Password'
+              style={{ marginBottom: '10px' }}
+              icon='fas fa-key'
+            />
+            <Button
+              big
+              iconStart='fas fa-chevron-right'
+              onClick={() => { dispatch(login({ username, password })) }}
+              style={{ alignSelf: 'flex-end' }}
+            >
+              Login
+            </Button>
+          </LoginForm>
+        </Wrapper>
       </Container>
     </div>
   )
