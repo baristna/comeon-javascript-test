@@ -15,3 +15,10 @@ yarn dev
 ```js
 yarn start
 ```
+
+### Credentials
+| username | password |
+|----------|----------|
+| rebecka  | secret   |
+| eric     | data     |
+| stoffe   | rock     |
