@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start:next": "next start",
+    "start:server": "json-server --watch mock/mock-data.json --port 3001 --middlewares mock/mock-api.js",
+    "start": " npm run start:server & (npm run build && npm run start:next)"
   },
   "dependencies": {
     "axios": "^0.20.0",
@@ -21,6 +23,7 @@
     "styled-components": "^5.2.0"
   },
   "devDependencies": {
-    "babel-plugin-styled-components": "^1.11.1"
+    "babel-plugin-styled-components": "^1.11.1",
+    "json-server": "^0.16.2"
   }
 }
