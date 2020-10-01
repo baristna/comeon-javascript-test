@@ -12,7 +12,5 @@ yarn dev
 
 ### Prod
 ```js
-npm run start
-
 yarn start
 ```
