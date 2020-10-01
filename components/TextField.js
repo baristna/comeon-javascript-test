@@ -11,15 +11,24 @@ const Wrapper = styled.div`
 const InputControl = styled.input`
   line-height: ${p => p.big ? '60px' : '40px'};
   padding: 0 15px;
-  border: 1px solid rgba(0, 0, 0, 0.15);
   outline: none;
   border-radius: 3px;
   width: 100%;
   ${p => p.big ? 'font-size: 20px;' : ''}
 
-  &:hover, &:focus {
-    border-color: rgba(0, 0, 0, 0.3);
-  }
+  ${p => p.error ? `
+    border: 1px solid rgba(255, 0, 0, 0.6);
+  
+    &:hover, &:focus {
+      border-color: rgba(255, 0, 0, 0.9);
+    }
+  ` : `
+    border: 1px solid rgba(0, 0, 0, 0.15);
+  
+    &:hover, &:focus {
+      border-color: rgba(0, 0, 0, 0.3);
+    }
+  `}
 `
 
 const Icon = styled.i`

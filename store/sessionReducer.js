@@ -11,18 +11,20 @@ export default function sessionReducer(state = initialState, action) {
     case actionTypes.LOGIN_START:
       return {
         ...state,
-        loading: true
+        loading: true,
+        error: null,
       };
     case actionTypes.LOGIN_SUCCESS:
       return {
         ...state,
         player: action.payload,
         loading: false,
+        error: null,
       };
       case actionTypes.LOGIN_ERROR:
         return {
           ...state,
-          error: action.payload.error,
+          error: action.payload.err,
           loading: false,
         };
       case actionTypes.LOGOUT_START:

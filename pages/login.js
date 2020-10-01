@@ -21,10 +21,18 @@ const LoginForm = styled.div`
   align-items: center;
 `
 
+const Errors = styled.ul`
+  color: #F00;
+  margin-bottom: 20px;
+`
+
 const LoginPage = ({ dispatch, session }) => {
   const router = useRouter();
+  const [errors, setErrors] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [errorUser, setErrorUser] = useState(false);
+  const [errorPassword, setErrorPassword] = useState(false);
 
   const handlers = {
     username: setUsername,
@@ -32,7 +40,28 @@ const LoginPage = ({ dispatch, session }) => {
   }
 
   const handleOnChange = (e, field) => {
+    setErrors([]);
+    
     handlers[field](e.currentTarget.value);
+  }
+
+  const formSubmit = () => {
+    const errs = []
+    if (username && password) {
+      dispatch(login({ username, password }))
+    }
+
+    if (username === '') {
+      setErrorUser(true);
+      errs.push('Username is empty')
+    }
+
+    if (password === '') {
+      setErrorPassword(true);
+      errs.push('Password is empty')
+    }
+
+    setErrors(errs)
   }
 
   useEffect(() => {
@@ -40,6 +69,10 @@ const LoginPage = ({ dispatch, session }) => {
   }, [])
 
   useEffect(() => {
+    if (session.error) {
+      setErrors([session.error.data.error])
+    }
+
     if (session.player) {
       router.push('/games')
     }
@@ -57,24 +90,33 @@ const LoginPage = ({ dispatch, session }) => {
             <TextField
               big
               value={username}
-              onChange={(e) => handleOnChange(e, 'username')}
+              onChange={(e) => { setErrorUser(false); handleOnChange(e, 'username')}}
               style={{ marginBottom: '10px' }}
               placeholder='Username'
               icon='fas fa-user'
+              error={errorUser}
             />
             <TextField
               big
               type='password'
               value={password}
-              onChange={(e) => handleOnChange(e, 'password')}
+              onChange={(e) => { setErrorPassword(false); handleOnChange(e, 'password') }}
               placeholder='Password'
               style={{ marginBottom: '10px' }}
               icon='fas fa-key'
+              error={errorPassword}
             />
+            {!!errors.length && (
+              <Errors>
+                {errors.map((err) => (
+                  <li>{err}</li>
+                ))}
+              </Errors>
+            )}
             <Button
               big
               iconStart='fas fa-chevron-right'
-              onClick={() => { dispatch(login({ username, password })) }}
+              onClick={formSubmit}
               style={{ alignSelf: 'flex-end' }}
             >
               Login

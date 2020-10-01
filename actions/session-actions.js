@@ -28,7 +28,9 @@ export const login = ({ username, password }) => {
           })
         );
       })
-      .catch(err => dispatch(loginError(err)));
+      .catch(err => {
+        return dispatch(loginError(err.response))
+      });
   };
 }
 
